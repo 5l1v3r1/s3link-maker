@@ -51,7 +51,7 @@ print u
 sendtoaddress = raw_input('Send file to (email): ')
 
 msg = MIMEMultipart()
-msg['From'] = 'd.m.holdaway@gmail.com'
+msg['From'] = 'data@chewwok.com'
 msg['To'] = sendtoaddress
 msg['Subject'] = 'your data is ready for download'
 #message = "Hello, here is the link for your data %s the link will expire in 5mins." % u
@@ -59,16 +59,16 @@ msg['Subject'] = 'your data is ready for download'
 message = "hello,\nthis is the link for your data.\n\n%s\n \nThe link will expire in %s \nThank you" % (u,expiredate)
 msg.attach(MIMEText(message))
 
-mailserver = smtplib.SMTP('smtp.gmail.com',587)
+mailserver = smtplib.SMTP('smtp.mandrillapp.com',587)
 # identify ourselves to smtp gmail client
 mailserver.ehlo()
 # secure our email with tls encryption
 mailserver.starttls()
 # re-identify ourselves as an encrypted connection
 mailserver.ehlo()
-mailserver.login('d.m.holdaway@gmail.com', 'xxxx')
+mailserver.login('d.m.holdaway@googlemail.com', 'ZP5xPlLoNKZ5PlmPR3gKGQ')
 
-mailserver.sendmail('d.m.holdaway@gmail.com',sendtoaddress,msg.as_string())
+mailserver.sendmail('datasolutions',sendtoaddress,msg.as_string())
 
 mailserver.quit()
 
