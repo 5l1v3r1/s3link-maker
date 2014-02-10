@@ -8,20 +8,16 @@ import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 import os
+import zipfile
+import glob
+#from zipfile_infolist import print_info
+
 
 access_key = 'AKIAJWEFINSQCVLNH6PA'
 secret_key = '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'
 
 # -  Zip File 
 #############
-
-
-
-
-
-
-
-
 
 
 
@@ -35,7 +31,90 @@ conn = boto.connect_s3(
         host = 's3-eu-west-1.amazonaws.com',
         calling_format = boto.s3.connection.OrdinaryCallingFormat(),
         )
+os.system('clear')
+for bucket in conn.get_all_buckets():
+        print "{name}\t{created}".format(
+        name = bucket.name,
+        created = bucket.creation_date,
+        )
 
+#bucket = conn.create_bucket(bucket_name,
+ #       location=boto.s3.connection.Location.DEFAULT)
+
+
+uploadbucket = raw_input("Enter a bucket to upload to: ")
+#print uploadbucket
+
+bucket = conn.get_bucket(uploadbucket)
+
+#testfile = "test.txt"
+#/home/ubuntu/data_in
+
+#import os, sys
+os.system('clear')
+# Open a file
+path = "/data_in/"
+dirs = os.listdir( path )
+
+# This would print all the files and directories
+for file in dirs:
+   print file
+
+#os.listdir("/home/ubuntu/data_in")
+filetoupload = raw_input("Which File do you want to upload: ")
+#uploaddir = "/home/ubuntu/data_in/"
+
+finalready = path+filetoupload
+
+###############################################
+#    ready for zip 
+###############################################
+
+zipFileName = os.path.splitext(finalready)[0] + '.zip'
+#zipFile = zipfile.ZipFile(zipFileName, "w")
+print "Creating zip archive..."
+
+
+zf = zipfile.ZipFile(zipFileName, mode='w')
+try:
+    print "adding %s" % (finalready)
+    zf.write(finalready)
+finally:
+    print 'closing'
+    zf.close()
+
+#print
+#print_info('zipfile_write.zip')
+    
+#os.system('clear')
+###############################################
+
+
+
+print 'Uploading %s to Amazon S3 bucket %s' % \
+	(zipFileName, uploadbucket)
+
+def percent_cb(complete, total):
+    sys.stdout.write('#')
+    sys.stdout.flush()
+
+#fileuploadname = raw_input("enter name of file for server: ")
+
+from boto.s3.key import Key
+k = Key(bucket)
+k.key = zipFileName #fileuploadname
+k.set_contents_from_filename(zipFileName,
+        cb=percent_cb, num_cb=10)
+
+#os.system('clear')
+####################
+#conn = boto.connect_s3(
+ #       aws_access_key_id = access_key,
+  #      aws_secret_access_key = secret_key,
+   #     host = 's3-eu-west-1.amazonaws.com',
+    #    calling_format = boto.s3.connection.OrdinaryCallingFormat(),
+     #   )
+print ('\n')
 for bucket in conn.get_all_buckets():
 	print "{name}\t{created}".format(
 	name = bucket.name,
@@ -45,8 +124,8 @@ for bucket in conn.get_all_buckets():
 #b = input("Enter your bucket:")
 
 rawbucket = raw_input("Enter a bucket: ")
-print rawbucket
-
+#print rawbucket
+os.system('clear')
 bucket = conn.get_bucket(rawbucket)
 
 rs = bucket.list()
@@ -62,7 +141,10 @@ encrypt_url = encrypt_key.generate_url(expiredate, query_auth=True, force_http=T
 #print encrypt_url
 
 u = tinyurl.create_one(encrypt_url)
-print u 
+
+os.system('clear')
+
+print "Your Link Is : %s" % (u)
 
 sendtoaddress = raw_input('Send file to (email): ')
 

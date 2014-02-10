@@ -8,21 +8,13 @@ import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 import os
+import zipfile
 
 access_key = 'AKIAJWEFINSQCVLNH6PA'
 secret_key = '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'
 
 # -  Zip File 
 #############
-
-
-
-
-
-
-
-
-
 
 
 
