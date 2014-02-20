@@ -53,7 +53,7 @@ bucket = conn.get_bucket(uploadbucket)
 #import os, sys
 os.system('clear')
 # Open a file
-path = "/home/ec2-user/s3-linker/data_out/"
+path = "/home/ubuntu/python/data_out/"
 dirs = os.listdir( path )
 
 # This would print all the files and directories
