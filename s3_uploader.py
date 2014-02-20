@@ -53,8 +53,12 @@ bucket = conn.get_bucket(uploadbucket)
 #import os, sys
 os.system('clear')
 # Open a file
-path = "/home/ubuntu/python/data_out/"
+#path = os.path.dirname(os.path.realpath(/data_out/))
+path = os.path.abspath('data_out')
+#path = "/home/ubuntu/python/data_out/"
 dirs = os.listdir( path )
+#os.path.dirname(os.path.realpath(/data_out/))
+
 
 # This would print all the files and directories
 for file in dirs:
