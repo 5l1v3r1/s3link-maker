@@ -10,11 +10,11 @@ from email.MIMEText import MIMEText
 import os
 import zipfile
 import glob
+import re
 #from zipfile_infolist import print_info
 
-
-access_key = 'AKIAJWEFINSQCVLNH6PA'
-secret_key = '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'
+access_key = 'AKIAISX6KZIZPHHMPAOQ'
+secret_key = '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'
 
 # -  Zip File 
 #############
@@ -28,7 +28,7 @@ secret_key = '/R+0XnloDkt4fA31CUDG+IQtL8YcjGmtSsDtKmF+'
 conn = boto.connect_s3(
         aws_access_key_id = access_key,
         aws_secret_access_key = secret_key,
-        host = 's3-eu-west-1.amazonaws.com',
+        host = 's3-us-west-2.amazonaws.com',
         calling_format = boto.s3.connection.OrdinaryCallingFormat(),
         )
 os.system('clear')
@@ -53,7 +53,7 @@ bucket = conn.get_bucket(uploadbucket)
 #import os, sys
 os.system('clear')
 # Open a file
-path = "/data_in/"
+path = "/home/ec2-user/s3-linker/data_out/"
 dirs = os.listdir( path )
 
 # This would print all the files and directories
@@ -64,24 +64,27 @@ for file in dirs:
 filetoupload = raw_input("Which File do you want to upload: ")
 #uploaddir = "/home/ubuntu/data_in/"
 
-finalready = path+filetoupload
 
 ###############################################
 #    ready for zip 
 ###############################################
 
-zipFileName = os.path.splitext(finalready)[0] + '.zip'
-#zipFile = zipfile.ZipFile(zipFileName, "w")
-print "Creating zip archive..."
-
-
-zf = zipfile.ZipFile(zipFileName, mode='w')
-try:
-    print "adding %s" % (finalready)
-    zf.write(finalready)
-finally:
-    print 'closing'
-    zf.close()
+m = re.search("zip", filetoupload)
+if m is not None:
+    print "found a zip file - not going into zip loop"
+    zipFileName=filetoupload
+else :
+    
+    zipFileName = os.path.splitext(filetoupload)[0] + '.zip'
+    #zipFile = zipfile.ZipFile(zipFileName, "w")
+    print "Creating zip archive..."
+    zf = zipfile.ZipFile(path+zipFileName, mode='w')
+    try:
+        print "adding %s" % (filetoupload)
+        zf.write(path+filetoupload, filetoupload)
+    finally:
+        print 'closing'
+        zf.close()
 
 #print
 #print_info('zipfile_write.zip')
@@ -103,7 +106,7 @@ def percent_cb(complete, total):
 from boto.s3.key import Key
 k = Key(bucket)
 k.key = zipFileName #fileuploadname
-k.set_contents_from_filename(zipFileName,
+k.set_contents_from_filename(path+zipFileName,
         cb=percent_cb, num_cb=10)
 
 #os.system('clear')
