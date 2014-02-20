@@ -74,13 +74,14 @@ if m is not None:
     print "found a zip file - not going into zip loop"
     zipFileName=filetoupload
 else :
-    zipFileName = os.path.splitext(finalready)[0] + '.zip'
+    
+    zipFileName = os.path.splitext(filetoupload)[0] + '.zip'
     #zipFile = zipfile.ZipFile(zipFileName, "w")
     print "Creating zip archive..."
     zf = zipfile.ZipFile(path+zipFileName, mode='w')
     try:
         print "adding %s" % (filetoupload)
-        zf.write(finalready)
+        zf.write(path+filetoupload, filetoupload)
     finally:
         print 'closing'
         zf.close()
