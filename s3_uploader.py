@@ -13,8 +13,8 @@ import glob
 import re
 #from zipfile_infolist import print_info
 
-access_key = 'AKIAISX6KZIZPHHMPAOQ'
-secret_key = 'CmncTq+RWn8isUmfe0zAEpFk3dDk0lXuHFuO8LGW'
+access_key = 'KEY'
+secret_key = 'SECRET'
 
 # -  Zip File 
 #############
@@ -152,7 +152,7 @@ print "Your Link Is : %s" % (u)
 sendtoaddress = raw_input('Send file to (email): ')
 
 msg = MIMEMultipart()
-msg['From'] = 'data@chewwok.com'
+msg['From'] = 'FROM'
 msg['To'] = sendtoaddress
 msg['Subject'] = 'your data is ready for download'
 #message = "Hello, here is the link for your data %s the link will expire in 5mins." % u
@@ -167,7 +167,7 @@ mailserver.ehlo()
 mailserver.starttls()
 # re-identify ourselves as an encrypted connection
 mailserver.ehlo()
-mailserver.login('d.m.holdaway@googlemail.com', 'ZP5xPlLoNKZ5PlmPR3gKGQ')
+mailserver.login('EMAIL', 'MAIL_KEY')
 
 mailserver.sendmail('datasolutions',sendtoaddress,msg.as_string())
 
